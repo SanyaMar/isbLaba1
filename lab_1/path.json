@@ -1,0 +1,8 @@
+{
+    "path_text_1":"lab_1/task1/text1.txt",
+    "path_key_1":"lab_1/task1/key1.json",
+    "path_encrypted_text":"lab_1/task1/encrypted_text",
+    "path_taxt_2":"lab_1/task2/text2.txt",
+    "path_key_2":"lab_1/task2/key2.json",
+    "path_decrupted_text":"lab_1/task2/decrupted_text"
+}

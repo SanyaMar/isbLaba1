@@ -1,0 +1,1 @@
+file_path='lab_1/path.json'
