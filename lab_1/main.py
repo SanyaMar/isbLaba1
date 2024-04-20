@@ -71,12 +71,30 @@ def encrypt(name_file, key_file):
         print(f"Произошла ошибка при шифровании: {e}")
         return None
     
+def decrypt_text_with_key(name, key_file):
+    try:
+        key=read_json_file(key_file)
+        text = read_text_from_file(name)
+        decrypted_text = ""
+        for char in text:
+            decrypted_text += key[char]
+        return decrypted_text
+    except Exception as e:
+        print(f"Произошла ошибка при расшифровке текста: {e}")
+        return None
+
+
 def main() -> None:
     t1="lab_1/task1/text1.txt"
     key1="lab_1/task1/key1.json"
     encrypted_text="lab_1/task1/encrypted_text"
     encrypted=encrypt(t1,key1)
     write_to_txt_file(encrypted,encrypted_text)
+    t="lab_1/task2/text2.txt"
+    key="lab_1/task2/key2.json"
+    decrupted_text="lab_1/task2/decrupted_text"
+    text = decrypt_text_with_key(t,key)
+    write_to_txt_file(text,decrupted_text)
 
 
 if __name__ == "__main__":
