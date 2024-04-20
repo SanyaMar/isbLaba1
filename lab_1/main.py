@@ -55,6 +55,29 @@ def character_frequency_analysis(file_name, json_name):
     sorted_freq = dict(sorted(frequency.items(), key=lambda x: x[1], reverse=True))
     write_json_file(sorted_freq, json_name)
 
-    for char, freq in sorted_freq.items():
-        print(f" '{char}':  {freq:.6f}")
-character_frequency_analysis("lab_1/task2/text2.txt","lab_1/task2/frequency_analysis.json")
+    # for char, freq in sorted_freq.items():
+    #     print(f" '{char}':  {freq:.6f}")
+# character_frequency_analysis("lab_1/task2/text2.txt","lab_1/task2/frequency_analysis.json")
+
+def encrypt(name_file, key_file):
+    try:
+        key=read_json_file(key_file)
+        text = read_text_from_file(name_file)
+        encrypted_text = ""
+        for char in text:
+            encrypted_text += key[char]
+        return encrypted_text
+    except Exception as e:
+        print(f"Произошла ошибка при шифровании: {e}")
+        return None
+    
+def main() -> None:
+    t1="lab_1/task1/text1.txt"
+    key1="lab_1/task1/key1.json"
+    encrypted_text="lab_1/task1/encrypted_text"
+    encrypted=encrypt(t1,key1)
+    write_to_txt_file(encrypted,encrypted_text)
+
+
+if __name__ == "__main__":
+    main()
