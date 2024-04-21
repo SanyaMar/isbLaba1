@@ -1,1 +1,1 @@
-file_path='lab_1/path.json'
+FILE_PATH='lab_1/path.json'

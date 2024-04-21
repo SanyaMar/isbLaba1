@@ -1,6 +1,6 @@
 import json
 
-from cons import file_path
+from cons import FILE_PATH
 
 
 def read_text_from_file(file_path: str) -> str:
@@ -98,12 +98,6 @@ def character_frequency_analysis(file_name: str, json_name: str) -> dict[str, st
     sorted_freq = dict(sorted(frequency.items(), key=lambda x: x[1], reverse=True))
     write_json_file(sorted_freq, json_name)
 
-    # for char, freq in sorted_freq.items():
-    #     print(f" '{char}':  {freq:.6f}")
-
-
-# character_frequency_analysis("lab_1/task2/text2.txt","lab_1/task2/frequency_analysis.json")
-
 
 def encrypt(name_file: str, key_file: str) -> str:
     """
@@ -150,7 +144,7 @@ def decrypt_text_with_key(name: str, key_file: str) -> str:
 
 
 def main() -> None:
-    path_of_file = read_json_file(file_path)
+    path_of_file = read_json_file(FILE_PATH)
     text1 = path_of_file["path_text_1"]
     key1 = path_of_file["path_key_1"]
     encrypted_text = path_of_file["path_encrypted_text"]
