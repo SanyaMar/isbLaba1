@@ -5,7 +5,6 @@ import mpmath
 from const import M, PI, PATH
 
 
-
 def read_json_file(file_name: str) -> dict[str, str]:
     """
     This function reads the file format .json
