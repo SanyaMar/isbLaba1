@@ -1,5 +1,10 @@
 import json
 
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.serialization import load_pem_public_key, load_pem_private_key
+
+
 
 def read_text_from_file(file_path: str) -> str:
     """
@@ -85,3 +90,56 @@ def write_bytes_to_file(file_path: str, data: bytes) -> None:
         print(f"Успешно записано в файл {data}.txt")
     except Exception as e:
         print(f"Произошла ошибка при записи в файл: {e}")
+
+
+def read_rsa_public_key(filename: str) -> rsa.RSAPublicKey:
+    """
+    
+    """
+    try:
+        with open(filename, 'rb') as pem_in:
+            public_bytes = pem_in.read()
+            d_public_key = load_pem_public_key(public_bytes)
+            return d_public_key
+    except Exception as e:
+        print(f"Произошла ошибка при чтении: {e}")
+
+def write_rsa_public_key(filename: str, key: rsa.RSAPublicKey) -> None:
+    """
+    
+    """
+    try:
+        with open(filename, 'wb') as public_out:
+            public_out.write(key.public_bytes(encoding=serialization.Encoding.PEM,
+                format=serialization.PublicFormat.SubjectPublicKeyInfo))
+
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+
+
+def read_rsa_private_key(filename: str) -> rsa.RSAPrivateKey:
+    """
+    
+    """
+    try:
+        with open(filename, 'rb') as pem_in:
+            private_bytes = pem_in.read()
+            d_private_key = load_pem_private_key(private_bytes,password=None,)
+        return d_private_key
+    except Exception as e:
+        print(f"Произошла ошибка при чтении: {e}")
+
+
+
+def write_rsa_private_key(filename: str, key: rsa.RSAPublicKey) -> None:
+    """
+    
+    """
+    try:
+        with open(filename, 'wb') as private_out:
+            private_out.write(filename.private_bytes(encoding=serialization.Encoding.PEM,
+                format=serialization.PrivateFormat.TraditionalOpenSSL,
+                encryption_algorithm=serialization.NoEncryption()))
+            
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
