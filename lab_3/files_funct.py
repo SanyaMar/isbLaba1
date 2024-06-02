@@ -34,9 +34,9 @@ def write_to_txt_file(text: str, file_name: str) -> None:
         file_name: location the .txt file in which we write the data
     """
     try:
-        with open(file_name + ".txt", "w", encoding="utf-8") as file:
+        with open(file_name, "w", encoding="utf-8") as file:
             file.write(text)
-        print(f"Текст успешно записан в файл {file_name}.txt")
+        print(f"Текст успешно записан в файл .txt")
     except Exception as e:
         print(f"Произошла ошибка при записи в файл .txt: {e}")
 
@@ -87,7 +87,7 @@ def write_bytes_to_file(file_path: str, data: bytes) -> None:
     try:
         with open(file_path, 'wb') as file: 
             file.write(data)
-        print(f"Успешно записано в файл {data}.txt")
+        print(f"Успешно записано в файл .txt")
     except Exception as e:
         print(f"Произошла ошибка при записи bytes в файл: {e}")
 

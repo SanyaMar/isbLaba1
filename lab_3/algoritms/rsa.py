@@ -36,8 +36,8 @@ class AsymmetricKey:
         """
         Decrypts the given symmetric key using the provided private key and saves the result to the specified path.
         """
-        priv_key=files_funct.deserialization_rsa_private_key(private_key_path)
+        private_key=files_funct.deserialization_rsa_private_key(private_key_path)
         sym_key=files_funct.read_bytes_from_file(symmetric_key_path)
-        c_text = priv_key.decrypt(sym_key, padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),algorithm=hashes.SHA256(),label=None))
-        files_funct.write_bytes_to_file(decrypt_text_path,c_text)
+        dc_text = private_key.decrypt(sym_key,padding.OAEP(mgf=padding.MGF1(algorithm=hashes.SHA256()),algorithm=hashes.SHA256(),label=None))
+        files_funct.write_bytes_to_file(decrypt_text_path,dc_text)
   
