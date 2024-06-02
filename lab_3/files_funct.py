@@ -22,7 +22,7 @@ def read_text_from_file(file_path: str) -> str:
     except FileNotFoundError:
         print("Файл не найден.")
     except Exception as e:
-        print(f"Произошла ошибка при чтении файла: {e}")
+        print(f"Произошла ошибка при чтении файла .txt: {e}")
 
 
 def write_to_txt_file(text: str, file_name: str) -> None:
@@ -38,7 +38,7 @@ def write_to_txt_file(text: str, file_name: str) -> None:
             file.write(text)
         print(f"Текст успешно записан в файл {file_name}.txt")
     except Exception as e:
-        print(f"Произошла ошибка при записи в файл: {e}")
+        print(f"Произошла ошибка при записи в файл .txt: {e}")
 
 
 def read_json_file(file_name: str) -> dict[str, str]:
@@ -55,7 +55,7 @@ def read_json_file(file_name: str) -> dict[str, str]:
             data = json.load(file)
         return data
     except Exception as e:
-        print(f"Произошла ошибка при чтении файла: {e}")
+        print(f"Произошла ошибка при чтении файла .json: {e}")
         return None
 
 
@@ -72,7 +72,7 @@ def read_bytes_from_file(file_path: str) -> bytes:
         with open(file_path, 'rb') as file:  
             return file.read()
     except Exception as e:
-        print(f"Произошла ошибка при чтении файла: {e}")
+        print(f"Произошла ошибка при чтении bytes: {e}")
         return None
 
 
@@ -89,57 +89,57 @@ def write_bytes_to_file(file_path: str, data: bytes) -> None:
             file.write(data)
         print(f"Успешно записано в файл {data}.txt")
     except Exception as e:
-        print(f"Произошла ошибка при записи в файл: {e}")
+        print(f"Произошла ошибка при записи bytes в файл: {e}")
 
 
-def read_rsa_public_key(filename: str) -> rsa.RSAPublicKey:
+def deserialization_rsa_public_key(public_pem: str) -> rsa.RSAPublicKey:
     """
     
     """
     try:
-        with open(filename, 'rb') as pem_in:
+        with open(public_pem, 'rb') as pem_in:
             public_bytes = pem_in.read()
             d_public_key = load_pem_public_key(public_bytes)
             return d_public_key
     except Exception as e:
-        print(f"Произошла ошибка при чтении: {e}")
+        print(f"Произошла ошибка при десериализации открытого ключа: {e}")
 
-def write_rsa_public_key(filename: str, key: rsa.RSAPublicKey) -> None:
+def serialization_rsa_public_key(public_key: rsa.RSAPublicKey, public_pem: str) -> None:
     """
     
     """
     try:
-        with open(filename, 'wb') as public_out:
-            public_out.write(key.public_bytes(encoding=serialization.Encoding.PEM,
-                format=serialization.PublicFormat.SubjectPublicKeyInfo))
+        with open(public_pem, 'wb') as public_out:
+            public_out.write(public_key.public_bytes(encoding=serialization.Encoding.PEM,
+             format=serialization.PublicFormat.SubjectPublicKeyInfo))
 
     except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        print(f"Произошла ошибка при сериализации открытого ключа в файл: {e}")
 
 
-def read_rsa_private_key(filename: str) -> rsa.RSAPrivateKey:
+def deserialization_rsa_private_key(private_pem: str) -> rsa.RSAPrivateKey:
     """
     
     """
     try:
-        with open(filename, 'rb') as pem_in:
+        with open(private_pem, 'rb') as pem_in:
             private_bytes = pem_in.read()
             d_private_key = load_pem_private_key(private_bytes,password=None,)
         return d_private_key
     except Exception as e:
-        print(f"Произошла ошибка при чтении: {e}")
+        print(f"Произошла ошибка при десериализации закрытого ключа: {e}")
 
 
 
-def write_rsa_private_key(filename: str, key: rsa.RSAPublicKey) -> None:
+def serialization_rsa_private_key(private_key: rsa.RSAPublicKey,private_pem: str) -> None:
     """
     
     """
     try:
-        with open(filename, 'wb') as private_out:
-            private_out.write(filename.private_bytes(encoding=serialization.Encoding.PEM,
-                format=serialization.PrivateFormat.TraditionalOpenSSL,
-                encryption_algorithm=serialization.NoEncryption()))
+        with open(private_pem, 'wb') as private_out:
+            private_out.write(private_key.private_bytes(encoding=serialization.Encoding.PEM,
+              format=serialization.PrivateFormat.TraditionalOpenSSL,
+              encryption_algorithm=serialization.NoEncryption()))
             
     except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        print(f"Произошла ошибка при сериализации закрытого ключа в файл: {e}")

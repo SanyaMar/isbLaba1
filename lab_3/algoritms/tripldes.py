@@ -4,22 +4,27 @@ from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 class SymmetricKey:
-    def __init__(self, key_length):
-        self.key_length = key_length
+    def selecting_key_len(self):
+        while True:
+            key_len = int(input("Введите длину ключа (64, 128, или 192): "))
+            if key_len == 64 or key_len == 128 or key_len == 192:
+                break
+            else:
+                print("Неверный ввод. Пожалуйста, попробуйте снова.")
+        return key_len
 
-    def generate_key(self):
-       
-        self.key = os.urandom(self.key_length)
-        return self.key
-
+    def generate_key(self, key_len):
+        key = os.urandom(key_len)
+        return key
+    
     def encrypt_text(self, path_text,path_en_text, path_key):
         text=bytes(read_text_from_file(path_text),'UTF-8')
         key=read_bytes_from_file(path_key)
 
         padder = padding.PKCS7(algorithms.TripleDES.block_size).padder()
         padded_data = padder.update(text) + padder.finalize()
-
-        cipher = Cipher(algorithms.TripleDES(key), modes.ECB())
+        iv = os.urandom(16)
+        cipher = Cipher(algorithms.TripleDES(key), modes.ECB(iv))
         encryptor = cipher.encryptor()
         encrypt_text = encryptor.update(padded_data) + encryptor.finalize()
         write_bytes_to_file(encrypt_text,path_en_text)
@@ -34,5 +39,6 @@ class SymmetricKey:
 
         unpadder = padding.PKCS7(algorithms.TripleDES.block_size).unpadder()
         data = unpadder.update(padded_data) + unpadder.finalize()
-        write_to_txt_file(data,path_text)
-        return data
+        rez_text=data.decode('utf-8')
+        write_to_txt_file(rez_text,path_text)
+        return rez_text
