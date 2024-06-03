@@ -95,7 +95,14 @@ def write_bytes_to_file(file_path: str, data: bytes) -> None:
 
 
 def deserialization_rsa_public_key(public_pem: str) -> rsa.RSAPublicKey:
-    """ """
+    """
+    Deserialize an RSA public key from a PEM file.
+
+    Arguments:
+        public_pem (str): Path to the PEM file containing the public key.
+    Returns:
+        rsa.RSAPublicKey: The deserialized RSA public key.
+    """
     try:
         with open(public_pem, "rb") as pem_in:
             public_bytes = pem_in.read()
@@ -107,7 +114,15 @@ def deserialization_rsa_public_key(public_pem: str) -> rsa.RSAPublicKey:
 
 
 def serialization_rsa_public_key(public_key: rsa.RSAPublicKey, public_pem: str) -> None:
-    """ """
+    """
+    Serialize an RSA public key to a PEM file.
+
+    Arguments:
+        public_key (rsa.RSAPublicKey): The RSA public key to be serialized.
+        public_pem (str): Path to save the serialized public key as a PEM file.
+    Returns:
+        None
+    """
     try:
         with open(public_pem, "wb") as public_out:
             public_out.write(
@@ -122,7 +137,14 @@ def serialization_rsa_public_key(public_key: rsa.RSAPublicKey, public_pem: str) 
 
 
 def deserialization_rsa_private_key(private_pem: str) -> rsa.RSAPrivateKey:
-    """ """
+    """
+    Deserialize an RSA private key from a PEM file.
+
+    Arguments:
+        private_pem (str): Path to the PEM file containing the private key.
+    Returns:
+        rsa.RSAPrivateKey: The deserialized RSA private key.
+    """
     try:
         with open(private_pem, "rb") as pem_in:
             private_bytes = pem_in.read()
@@ -137,9 +159,17 @@ def deserialization_rsa_private_key(private_pem: str) -> rsa.RSAPrivateKey:
 
 
 def serialization_rsa_private_key(
-    private_key: rsa.RSAPublicKey, private_pem: str
+    private_key: rsa.RSAPrivateKey, private_pem: str
 ) -> None:
-    """ """
+    """
+    Serialize an RSA private key to a PEM file.
+
+    Arguments:
+        private_key (rsa.RSAPublicKey): The RSA private key to be serialized.
+        private_pem (str): Path to save the serialized private key as a PEM file.
+    Returns:
+        None
+    """
     try:
         with open(private_pem, "wb") as private_out:
             private_out.write(
@@ -156,12 +186,16 @@ def serialization_rsa_private_key(
 
 def serial_sym_key(file_name: str, key: bytes) -> None:
     """
+    Serialize a symmetric key to a file.
 
     Arguments:
-
+        file_name (str): Path to save the serialized symmetric key.
+        key (bytes): The symmetric key to be serialized.
+    Returns:
+        None
     """
     try:
-        with open(file_name, 'wb') as key_file:
+        with open(file_name, "wb") as key_file:
             key_file.write(key)
         print(f"Симметричный ключ успешно сериализирован в файл .txt")
     except Exception as e:
@@ -170,15 +204,19 @@ def serial_sym_key(file_name: str, key: bytes) -> None:
 
 def deserial_sym_key(file_name: str) -> bytes:
     """
+    Deserialize a symmetric key from a file.
 
     Arguments:
+        file_name (str): Path to the file containing the serialized symmetric key.
     Returns:
+        bytes: The deserialized symmetric key.
     """
     try:
-        with open(file_name, mode='rb') as key_file: 
+        with open(file_name, mode="rb") as key_file:
             content = key_file.read()
             print(f"Симметричный ключ успешно десериализирован в файл .txt")
             return content
     except Exception as e:
         print(f"Произошла ошибка при десериализации симметричного ключа: {e}")
         return None
+         
