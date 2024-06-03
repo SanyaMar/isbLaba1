@@ -1,4 +1,3 @@
-from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
 from files_funct import (
@@ -19,16 +18,21 @@ class AsymmetricKey:
     def generate_keys(self) -> tuple[rsa.RSAPublicKey, rsa.RSAPrivateKey]:
         """
         Generates a pair of asymmetric keys: private and public.
+
+        Return:
+                tuple: public key and private key
         """
         keys = rsa.generate_private_key(public_exponent=65537, key_size=2048)
         private_key = keys
         public_key = keys.public_key()
         return (public_key, private_key)
 
-
     def encrypt_symmetric_key(
         self, symmetric_key_path: str, public_key_path: str, encrypt_sym_path: str
     ) -> None:
+        """
+        Encrypts a symmetric key using an RSA public key.
+        """
         public_key = deserialization_rsa_public_key(public_key_path)
         sym_key = deserial_sym_key(symmetric_key_path)
         c_text = public_key.encrypt(
@@ -41,10 +45,12 @@ class AsymmetricKey:
         )
         write_bytes_to_file(encrypt_sym_path, c_text)
 
-
     def decrypt_symmetric_key(
         self, symmetric_en_key_path: str, private_key_path: str, decrypt_key_path: str
     ) -> None:
+        """
+        Decrypts a symmetric key using an RSA private key.
+        """
         private_key = deserialization_rsa_private_key(private_key_path)
         sym_key = deserial_sym_key(symmetric_en_key_path)
         dc_text = private_key.decrypt(
@@ -56,3 +62,4 @@ class AsymmetricKey:
             ),
         )
         write_bytes_to_file(decrypt_key_path, dc_text)
+         
