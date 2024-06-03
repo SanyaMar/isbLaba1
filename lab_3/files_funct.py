@@ -2,8 +2,10 @@ import json
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
-from cryptography.hazmat.primitives.serialization import load_pem_public_key, load_pem_private_key
-
+from cryptography.hazmat.primitives.serialization import (
+    load_pem_public_key,
+    load_pem_private_key,
+)
 
 
 def read_text_from_file(file_path: str) -> str:
@@ -69,7 +71,7 @@ def read_bytes_from_file(file_path: str) -> bytes:
         num_bytes: content file
     """
     try:
-        with open(file_path, 'rb') as file:  
+        with open(file_path, "rb") as file:
             return file.read()
     except Exception as e:
         print(f"Произошла ошибка при чтении bytes: {e}")
@@ -85,7 +87,7 @@ def write_bytes_to_file(file_path: str, data: bytes) -> None:
         data: location the file in which we write bytes
     """
     try:
-        with open(file_path, 'wb') as file: 
+        with open(file_path, "wb") as file:
             file.write(data)
         print(f"Успешно записано в файл .txt")
     except Exception as e:
@@ -93,53 +95,90 @@ def write_bytes_to_file(file_path: str, data: bytes) -> None:
 
 
 def deserialization_rsa_public_key(public_pem: str) -> rsa.RSAPublicKey:
-    """
-    
-    """
+    """ """
     try:
-        with open(public_pem, 'rb') as pem_in:
+        with open(public_pem, "rb") as pem_in:
             public_bytes = pem_in.read()
             d_public_key = load_pem_public_key(public_bytes)
+            print(f"Открытый ключ успешно десериализирован в файл .txt")
             return d_public_key
     except Exception as e:
         print(f"Произошла ошибка при десериализации открытого ключа: {e}")
 
-def serialization_rsa_public_key(public_key: rsa.RSAPublicKey, public_pem: str) -> None:
-    """
-    
-    """
-    try:
-        with open(public_pem, 'wb') as public_out:
-            public_out.write(public_key.public_bytes(encoding=serialization.Encoding.PEM,
-             format=serialization.PublicFormat.SubjectPublicKeyInfo))
 
+def serialization_rsa_public_key(public_key: rsa.RSAPublicKey, public_pem: str) -> None:
+    """ """
+    try:
+        with open(public_pem, "wb") as public_out:
+            public_out.write(
+                public_key.public_bytes(
+                    encoding=serialization.Encoding.PEM,
+                    format=serialization.PublicFormat.SubjectPublicKeyInfo,
+                )
+            )
+        print(f"Открытый ключ успешно сериализирован в файл .txt")
     except Exception as e:
         print(f"Произошла ошибка при сериализации открытого ключа в файл: {e}")
 
 
 def deserialization_rsa_private_key(private_pem: str) -> rsa.RSAPrivateKey:
-    """
-    
-    """
+    """ """
     try:
-        with open(private_pem, 'rb') as pem_in:
+        with open(private_pem, "rb") as pem_in:
             private_bytes = pem_in.read()
-            d_private_key = load_pem_private_key(private_bytes,password=None,)
+            d_private_key = load_pem_private_key(
+                private_bytes,
+                password=None,
+            )
+        print(f"Закрытый ключ успешно десериализирован в файл .txt")
         return d_private_key
     except Exception as e:
         print(f"Произошла ошибка при десериализации закрытого ключа: {e}")
 
 
-
-def serialization_rsa_private_key(private_key: rsa.RSAPublicKey,private_pem: str) -> None:
-    """
-    
-    """
+def serialization_rsa_private_key(
+    private_key: rsa.RSAPublicKey, private_pem: str
+) -> None:
+    """ """
     try:
-        with open(private_pem, 'wb') as private_out:
-            private_out.write(private_key.private_bytes(encoding=serialization.Encoding.PEM,
-              format=serialization.PrivateFormat.TraditionalOpenSSL,
-              encryption_algorithm=serialization.NoEncryption()))
-            
+        with open(private_pem, "wb") as private_out:
+            private_out.write(
+                private_key.private_bytes(
+                    encoding=serialization.Encoding.PEM,
+                    format=serialization.PrivateFormat.TraditionalOpenSSL,
+                    encryption_algorithm=serialization.NoEncryption(),
+                )
+            )
+        print(f"Закрытый ключ успешно сериализирован в файл .txt")
     except Exception as e:
         print(f"Произошла ошибка при сериализации закрытого ключа в файл: {e}")
+
+
+def serial_sym_key(file_name: str, key: bytes) -> None:
+    """
+
+    Arguments:
+
+    """
+    try:
+        with open(file_name, 'wb') as key_file:
+            key_file.write(key)
+        print(f"Симметричный ключ успешно сериализирован в файл .txt")
+    except Exception as e:
+        print(f"Произошла ошибка при сериализации симметричного ключа в файл: {e}")
+
+
+def deserial_sym_key(file_name: str) -> bytes:
+    """
+
+    Arguments:
+    Returns:
+    """
+    try:
+        with open(file_name, mode='rb') as key_file: 
+            content = key_file.read()
+            print(f"Симметричный ключ успешно десериализирован в файл .txt")
+            return content
+    except Exception as e:
+        print(f"Произошла ошибка при десериализации симметричного ключа: {e}")
+        return None

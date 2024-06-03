@@ -1,10 +1,10 @@
 {
     "initial_file": "lab_3/texts/text.txt",
-    "encrypted_file":"lab_3/texts/encrypt_text.txt",
-    "decrypted_file":"lab_3/texts/decrypted_text.txt",
-    "symmetric_key":"lab_3/keys/symmetric_key.txt",
-    "encryp_symmetric_key":"lab_3/keys/encryp_symmetric_key.txt",
-    "decryp_symmetric_key":"lab_3/keys/decryp_symmetric_key.txt",
-    "public_key":"lab_3/keys/rsa_public_key.pem",
-    "secret_key":"lab_3/keys/rsa_private_key.pem"
+    "encrypted_file": "lab_3/texts/encrypt_text.txt",
+    "decrypted_file": "lab_3/texts/decrypted_text.txt",
+    "symmetric_key": "lab_3/keys/symmetric_key.txt",
+    "encryp_symmetric_key": "lab_3/keys/encryp_symmetric_key.txt",
+    "decryp_symmetric_key": "lab_3/keys/decryp_symmetric_key.txt",
+    "public_key": "lab_3/keys/rsa_public_key.pem",
+    "secret_key": "lab_3/keys/rsa_private_key.pem"
 }

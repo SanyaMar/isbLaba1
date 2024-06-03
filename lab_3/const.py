@@ -1,1 +1,1 @@
-SETTINGS="lab_3\\settings.json"
+SETTINGS = "lab_3\\settings.json"
