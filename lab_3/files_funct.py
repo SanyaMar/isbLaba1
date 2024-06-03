@@ -107,7 +107,7 @@ def deserialization_rsa_public_key(public_pem: str) -> rsa.RSAPublicKey:
         with open(public_pem, "rb") as pem_in:
             public_bytes = pem_in.read()
             d_public_key = load_pem_public_key(public_bytes)
-            print(f"Открытый ключ успешно десериализирован в файл .txt")
+            print(f"Открытый ключ успешно десериализирован в файл pem" )
             return d_public_key
     except Exception as e:
         print(f"Произошла ошибка при десериализации открытого ключа: {e}")
@@ -131,9 +131,9 @@ def serialization_rsa_public_key(public_key: rsa.RSAPublicKey, public_pem: str) 
                     format=serialization.PublicFormat.SubjectPublicKeyInfo,
                 )
             )
-        print(f"Открытый ключ успешно сериализирован в файл .txt")
+        print(f"Открытый ключ успешно сериализирован в файл")
     except Exception as e:
-        print(f"Произошла ошибка при сериализации открытого ключа в файл: {e}")
+        print(f"Произошла ошибка при сериализации открытого ключа в файл pem: {e}")
 
 
 def deserialization_rsa_private_key(private_pem: str) -> rsa.RSAPrivateKey:
@@ -152,7 +152,7 @@ def deserialization_rsa_private_key(private_pem: str) -> rsa.RSAPrivateKey:
                 private_bytes,
                 password=None,
             )
-        print(f"Закрытый ключ успешно десериализирован в файл .txt")
+        print(f"Закрытый ключ успешно десериализирован в файл pem")
         return d_private_key
     except Exception as e:
         print(f"Произошла ошибка при десериализации закрытого ключа: {e}")
@@ -179,7 +179,7 @@ def serialization_rsa_private_key(
                     encryption_algorithm=serialization.NoEncryption(),
                 )
             )
-        print(f"Закрытый ключ успешно сериализирован в файл .txt")
+        print(f"Закрытый ключ успешно сериализирован в файл pem")
     except Exception as e:
         print(f"Произошла ошибка при сериализации закрытого ключа в файл: {e}")
 
