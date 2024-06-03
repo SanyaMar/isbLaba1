@@ -1,11 +1,11 @@
 import argparse
-import files_funct
 import json
-
 
 from algoritms.rsa import AsymmetricKey
 from algoritms.tripldes import SymmetricKey
 from const import SETTINGS
+import files_funct
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -16,6 +16,7 @@ if __name__ == "__main__":
     parser.add_argument('-set', '--settings', default=SETTINGS,
                         type=str, help='Открывает .json файл')
     args = parser.parse_args()
+
     try:
         with open(args.settings, 'r', encoding='utf-8') as file:
             settings = json.load(file)
@@ -24,6 +25,7 @@ if __name__ == "__main__":
 
     sym = SymmetricKey()
     asym = AsymmetricKey()
+
     match args.program:
         case 0:
             print("Генерация ключей гибридной системы")
@@ -33,7 +35,7 @@ if __name__ == "__main__":
             files_funct.write_bytes_to_file(settings['symmetric_key'], sym_key)
             public_key, private_key = asym.generate_keys()
             files_funct.serialization_rsa_public_key(
-                public_key, settings['public_key'],)
+                public_key, settings['public_key'])
             files_funct.serialization_rsa_private_key(
                 private_key, settings['secret_key'])
             asym.encrypt_symmetric_key(
@@ -45,7 +47,6 @@ if __name__ == "__main__":
                 settings['encryp_symmetric_key'], settings['secret_key'], settings['decryp_symmetric_key'])
             sym.encrypt_text(
                 settings['initial_file'], settings['encrypted_file'], settings['decryp_symmetric_key'])
-
         case 2:
             print()
             print("Дешифрование данных гибридной системой")
