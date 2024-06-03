@@ -7,6 +7,21 @@ from const import SETTINGS
 import files_funct
 
 
+def process(
+    lenght: int,
+    symmetric_key: str,
+    public_key: str,
+    secret_key: str,
+    encryp_symmetric_key: str,
+):
+    sym_key = sym.generate_key(lenght)
+    files_funct.write_bytes_to_file(symmetric_key, sym_key)
+    public_key, private_key = asym.generate_keys()
+    files_funct.serialization_rsa_public_key(public_key, public_key)
+    files_funct.serialization_rsa_private_key(private_key, secret_key)
+    asym.encrypt_symmetric_key(symmetric_key, public_key, encryp_symmetric_key)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-pr', '--program', type=int, help='Выбор режима работы: '
@@ -31,26 +46,35 @@ if __name__ == "__main__":
             print("Генерация ключей гибридной системы")
             print()
             len_key = sym.selecting_key_len()
-            sym_key = sym.generate_key(len_key)
-            files_funct.write_bytes_to_file(settings['symmetric_key'], sym_key)
-            public_key, private_key = asym.generate_keys()
-            files_funct.serialization_rsa_public_key(
-                public_key, settings['public_key'])
-            files_funct.serialization_rsa_private_key(
-                private_key, settings['secret_key'])
-            asym.encrypt_symmetric_key(
-                settings['symmetric_key'], settings['public_key'], settings['encryp_symmetric_key'])
+            process(len_key, 
+                    settings['symmetric_key'], 
+                    settings['public_key'],
+                    settings['secret_key'], 
+                    settings['encryp_symmetric_key']
+                    )
         case 1:
             print(" Шифрование данных гибридной системой")
             print()
             asym.decrypt_symmetric_key(
-                settings['encryp_symmetric_key'], settings['secret_key'], settings['decryp_symmetric_key'])
+                settings['encryp_symmetric_key'], 
+                settings['secret_key'], 
+                settings['decryp_symmetric_key'])
             sym.encrypt_text(
-                settings['initial_file'], settings['encrypted_file'], settings['decryp_symmetric_key'])
+                settings['initial_file'], 
+                settings['encrypted_file'], 
+                settings['decryp_symmetric_key']
+                )
         case 2:
             print()
             print("Дешифрование данных гибридной системой")
             asym.encrypt_symmetric_key(
-                settings['symmetric_key'], settings['public_key'], settings['encryp_symmetric_key'])
+                settings['symmetric_key'], 
+                settings['public_key'], 
+                settings['encryp_symmetric_key']
+                )
             sym.decrypt_text(
-                settings['encrypted_file'], settings['decrypted_file'], settings['decryp_symmetric_key'])
+                settings['encrypted_file'], 
+                settings['decrypted_file'], 
+                settings['decryp_symmetric_key']
+                )
+             
