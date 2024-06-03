@@ -52,4 +52,4 @@ if __name__ == "__main__":
             asym.encrypt_symmetric_key(
                 settings['symmetric_key'], settings['public_key'], settings['encryp_symmetric_key'])
             sym.decrypt_text(
-                settings['encrypted_file'], settings['decrypted_file'], settings['encryp_symmetric_key'])
+                settings['encrypted_file'], settings['decrypted_file'], settings['decryp_symmetric_key'])
