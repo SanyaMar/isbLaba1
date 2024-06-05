@@ -1,10 +1,10 @@
 import argparse
 import json
+import files_funct
 
 from algoritms.rsa import AsymmetricKey
 from algoritms.tripldes import SymmetricKey
 from const import SETTINGS
-import files_funct
 
 
 def process(
