@@ -2,14 +2,7 @@ import os
 
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from files_funct import (
-    read_text_from_file,
-    read_bytes_from_file,
-    write_bytes_to_file,
-    write_to_txt_file,
-    deserial_sym_key,
-)
-
+from files_funct import FilesFunct
 
 class SymmetricKey:
     """
@@ -39,8 +32,8 @@ class SymmetricKey:
         """
         Encrypts text using a symmetric encryption algorithm.
         """
-        text = bytes(read_text_from_file(path_text), "UTF-8")
-        key = deserial_sym_key(path_key)
+        text = bytes(FilesFunct.read_text_from_file(path_text), "UTF-8")
+        key = FilesFunct.deserial_sym_key(path_key)
 
         padder = padding.PKCS7(64).padder()
         padded_data = padder.update(text) + padder.finalize()
@@ -48,7 +41,7 @@ class SymmetricKey:
         cipher = Cipher(algorithms.TripleDES(key), modes.CBC(iv))
         encryptor = cipher.encryptor()
         encrypt_text = iv + encryptor.update(padded_data) + encryptor.finalize()
-        write_bytes_to_file(path_en_text, encrypt_text)
+        FilesFunct.write_bytes_to_file(path_en_text, encrypt_text)
 
     def decrypt_text(
         self, path_en_text: str, path_dec_text: str, path_key: str
@@ -56,8 +49,8 @@ class SymmetricKey:
         """
         Decrypts the text using a symmetric encryption algorithm.
         """
-        encrypt_text = read_bytes_from_file(path_en_text)
-        key = deserial_sym_key(path_key)
+        encrypt_text = FilesFunct.read_bytes_from_file(path_en_text)
+        key = FilesFunct.deserial_sym_key(path_key)
         iv = encrypt_text[:8]
         cipher = Cipher(algorithms.TripleDES(key), modes.CBC(iv))
         decryptor = cipher.decryptor()
@@ -65,5 +58,5 @@ class SymmetricKey:
 
         unpadder = padding.PKCS7(64).unpadder()
         unpadded_dc_text = unpadder.update(dc_text) + unpadder.finalize()
-        write_to_txt_file(unpadded_dc_text.decode("UTF-8"), path_dec_text)
+        FilesFunct.write_to_txt_file(unpadded_dc_text.decode("UTF-8"), path_dec_text)
  

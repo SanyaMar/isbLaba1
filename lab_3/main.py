@@ -1,80 +1,72 @@
 import argparse
-import json
-import files_funct
 
 from algoritms.rsa import AsymmetricKey
 from algoritms.tripldes import SymmetricKey
+from files_funct import FilesFunct
 from const import SETTINGS
-
-
-def process(
-    lenght: int,
-    symmetric_key: str,
-    public_key: str,
-    secret_key: str,
-    encryp_symmetric_key: str,
-):
-    sym_key = sym.generate_key(lenght)
-    files_funct.write_bytes_to_file(symmetric_key, sym_key)
-    public_key, private_key = asym.generate_keys()
-    files_funct.serialization_rsa_public_key(public_key, public_key)
-    files_funct.serialization_rsa_private_key(private_key, secret_key)
-    asym.encrypt_symmetric_key(symmetric_key, public_key, encryp_symmetric_key)
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-pr', '--program', type=int, help='Выбор режима работы: '
-                        '0 - Запускает режим генерации ключей'
-                        '1 - Запускает режим шифрования'
-                        '2 - Запускает режим дешифрования')
+                        '0 - Генерация симметричного ключа'
+                        '1 - Генерация асимметричного ключа'
+                        '2 - Шифрование симметричного ключа'
+                        '3 - Дешифрование симметричного ключа'
+                        '4 - Шифрования текста'
+                        '5 - Дешифрования текста')
     parser.add_argument('-set', '--settings', default=SETTINGS,
                         type=str, help='Открывает .json файл')
+
     args = parser.parse_args()
-
-    try:
-        with open(args.settings, 'r', encoding='utf-8') as file:
-            settings = json.load(file)
-    except Exception as e:
-        print(f"Произошла ошибка при загрузке: {e}")
-
+    settings = FilesFunct.read_json_file(args.settings)
     sym = SymmetricKey()
     asym = AsymmetricKey()
 
     match args.program:
         case 0:
-            print("Генерация ключей гибридной системы")
+            print("Генерация симметричного ключа")
+            sym_key = sym.generate_key(sym.selecting_key_len())
+            FilesFunct.write_bytes_to_file(settings['symmetric_key'],
+                                           sym_key)
             print()
-            len_key = sym.selecting_key_len()
-            process(len_key, 
-                    settings['symmetric_key'], 
-                    settings['public_key'],
-                    settings['secret_key'], 
-                    settings['encryp_symmetric_key']
-                    )
         case 1:
-            print(" Шифрование данных гибридной системой")
+            print("Генерация асимметричного ключа")
+            public_key, private_key = asym.generate_keys()
+            FilesFunct.serialization_rsa_public_key(
+                public_key, settings['public_key'])
+            FilesFunct.serialization_rsa_private_key(
+                private_key, settings['secret_key'])
             print()
-            asym.decrypt_symmetric_key(
-                settings['encryp_symmetric_key'], 
-                settings['secret_key'], 
-                settings['decryp_symmetric_key'])
-            sym.encrypt_text(
-                settings['initial_file'], 
-                settings['encrypted_file'], 
-                settings['decryp_symmetric_key']
-                )
         case 2:
-            print()
-            print("Дешифрование данных гибридной системой")
+            print("Шифрование симметричного ключа")
             asym.encrypt_symmetric_key(
-                settings['symmetric_key'], 
-                settings['public_key'], 
+                settings['symmetric_key'],
+                settings['public_key'],
                 settings['encryp_symmetric_key']
-                )
-            sym.decrypt_text(
-                settings['encrypted_file'], 
-                settings['decrypted_file'], 
+            )
+            print()
+        case 3:
+            print("Дешифрование симметричного ключа")
+            asym.decrypt_symmetric_key(
+                settings['encryp_symmetric_key'],
+                settings['secret_key'],
                 settings['decryp_symmetric_key']
-                )
-             
+            )
+            print()
+        case 4:
+            print("Шифрования текста")
+            sym.encrypt_text(
+                settings['initial_file'],
+                settings['encrypted_file'],
+                settings['decryp_symmetric_key']
+            )
+            print()
+        case 5:
+            print("Дешифрования текста")
+            sym.decrypt_text(
+                settings['encrypted_file'],
+                settings['decrypted_file'],
+                settings['decryp_symmetric_key']
+            )
+            print()

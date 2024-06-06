@@ -1,12 +1,7 @@
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
-from files_funct import (
-    deserialization_rsa_public_key,
-    write_bytes_to_file,
-    deserialization_rsa_private_key,
-    deserial_sym_key,
-)
+from files_funct import FilesFunct
 
 
 class AsymmetricKey:
@@ -34,8 +29,8 @@ class AsymmetricKey:
         """
         Encrypts a symmetric key using an RSA public key.
         """
-        public_key = deserialization_rsa_public_key(public_key_path)
-        sym_key = deserial_sym_key(symmetric_key_path)
+        public_key = FilesFunct.deserialization_rsa_public_key(public_key_path)
+        sym_key = FilesFunct.deserial_sym_key(symmetric_key_path)
         c_text = public_key.encrypt(
             sym_key,
             padding.OAEP(
@@ -44,7 +39,7 @@ class AsymmetricKey:
                 label=None,
             ),
         )
-        write_bytes_to_file(encrypt_sym_path, c_text)
+        FilesFunct.write_bytes_to_file(encrypt_sym_path, c_text)
 
     def decrypt_symmetric_key(
         self, symmetric_en_key_path: str, private_key_path: str, decrypt_key_path: str
@@ -52,8 +47,8 @@ class AsymmetricKey:
         """
         Decrypts a symmetric key using an RSA private key.
         """
-        private_key = deserialization_rsa_private_key(private_key_path)
-        sym_key = deserial_sym_key(symmetric_en_key_path)
+        private_key = FilesFunct.deserialization_rsa_private_key(private_key_path)
+        sym_key = FilesFunct.deserial_sym_key(symmetric_en_key_path)
         dc_text = private_key.decrypt(
             sym_key,
             padding.OAEP(
@@ -62,5 +57,5 @@ class AsymmetricKey:
                 label=None,
             ),
         )
-        write_bytes_to_file(decrypt_key_path, dc_text)
+        FilesFunct.write_bytes_to_file(decrypt_key_path, dc_text)
          
